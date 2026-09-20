@@ -1,10 +1,10 @@
-cat << 'EOF' > find_homologs.sh
 #!/bin/bash
 
 QUERY="$1"
 SUBJECT="$2"
-EVALUE="$3"
-OUTFILE="$4"
+OUTFILE="$3"
 
-tblastn -query "$QUERY" -subject "$SUBJECT" -evalue "$EVALUE" -outfmt 6 | awk '$3 >= 30 && $4 >= 100' > "$OUTFILE"
-EOF
+tblastn -query "$QUERY" -subject "$SUBJECT" -outfmt '6 std qlen' \
+  | awk '$3 > 30 && $4 > 0.9 * $13' > "$OUTFILE"
+
+wc -l < "$OUTFILE"
