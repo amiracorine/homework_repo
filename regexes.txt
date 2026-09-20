@@ -1,7 +1,7 @@
-1 sed -E 's/>.*\|([0-9]+-[0-9]+) .* GN=([a-zA-Z0-9]+) .*/\2_\1/; t; s/>.*\|([0-9]+-[0-9]+).*\bGN=([^ ]+).*/\2_\1/; /^>/s/^>/>/' HK_domain.faa | sed -E 's/>([a-zA-Z0-9]+)_([0-9]+-[0-9]+).*/>\1_\2/' > out_1.fna
-2 sed -E 's/>.*\|([0-9]+-[0-9]+) .* ([A-Z][a-z]{2}[A-Z]) OS=.*/\2_\1/' HK_domain.faa > out_2.fna
-3 sed -E 's/>.*\|([0-9]+-[0-9]+) .* GN=([a-zA-Z0-9]+) .*/\2_\1/' HK_domain.faa | awk '/^>/{print ">" toupper(substr($0,2,1)) substr($0,3); next} {print}' > out_3.fna
-4 grep -oE "['A-Za-z0-9_.-]+" Tree_of_life.nwk | tr -d "'" > out_4.txt
+1 sed -E 's/>.*\|([0-9]+-[0-9]+).*\bGN=([^ ]+).*/>\2_\1/' HK_domain.faa > out_1.fna
+2 sed -E 's/>.*\|([0-9]+-[0-9]+).*\b([A-Z][a-z]{2}[A-Z]) OS=.*/>\2_\1/' HK_domain.faa > out_2.fna
+3 sed -E 's/>.*\|([0-9]+-[0-9]+).*\bGN=([a-zA-Z0-9]+).*/>\u\2_\1/' HK_domain.faa > out_3.fna
+4 grep -oP "(?<=[(,])[^(),:;]+" Tree_of_life.nwk | tr -d "'" > out_4.txt
 5 grep -oE ':[0-9.]+' Tree_of_life.nwk | tr -d ':' | awk '{s+=$1} END {print s}' > out_5.txt
 6 find find_data/ -regextype egrep -regex '.*/[a-z][^/]*\.(fasta|fa)$' | wc -l > out_6.txt
 7 find find_data/ -regextype egrep -regex '.*/[A-Z][^/]*\.(fasta|fa)$' | wc -l > out_7.txt
