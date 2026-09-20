@@ -1,3 +1,5 @@
+#!/bin/bash
+
 REPEAT_QUERY=$1
 ASSEMBLY=$2
 OUTPUT=$3
@@ -8,8 +10,7 @@ blastn -query "$REPEAT_QUERY" -db temp_assembly_db -outfmt "6 sseqid sstart send
 
 tail -n +2 repeats.txt > next_repeats.txt
 
-paste repeats.txt next_repeats.txt | awk '$1 == $4 && $6 > $3 { print $1, $3, $6 - 1 }' | tr ' ' '\t' > spacers.bed
-
+paste repeats.txt next_repeats.txt | awk '$1 == $4 && $5 > $3 { print $1, $3, $5 - 1 }' | tr ' ' '\t' > spacers.bed
 seqtk subseq "$ASSEMBLY" spacers.bed > "$OUTPUT"
 
 rm -f temp_assembly_db* repeats.txt next_repeats.txt spacers.bed
